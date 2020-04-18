@@ -53,7 +53,7 @@ def main():
                 print("Sound2 Level: {} dB".format(snd2.getdB()))
                 print("Temperature: {}".format(temp.getSensorValue()))
                 print("Humidity: {}".format(hum.getSensorValue()))
-                print("Precision Light: {}".format(light.getSensorValue))
+                print("Precision Light: {}".format(light.getSensorValue()))
                 #plotOct(snd1.getOctaves())
                 time.sleep(1)
 
