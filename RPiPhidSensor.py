@@ -11,7 +11,7 @@ light_port = 5
 temp_port = 4
 hum_port = 3
 
-waitT = 5000
+waitT = 10000
 
 def main():
         snd1 = SoundSensor()
