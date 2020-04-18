@@ -1,0 +1,8 @@
+{
+    "hub_sn":540054,
+    "sound1_port":1, 
+    "sound2_port":0, 
+    "light_port":5,
+    "temp_port":4,
+    "hum_port":3
+}

@@ -7,6 +7,7 @@ from time import time, ctime
 import json
 import socket
 
+# DEFAULT Values - To be updated in openChannels() method
 hub_sn = 540054
 sound1_port = 0
 sound2_port = 1
@@ -25,16 +26,6 @@ def main():
 
         openChannels(snd1, snd2, temp, hum, light)
 
-        #for i in range(10):
-        #        print("Sound1 Level: {} dB".format(snd1.getdB()))
-        #        print("Sound2 Level: {} dB".format(snd2.getdB()))
-        #        print("Temperature: {}".format(temp.getSensorValue()))
-        #         print("Humidity: {}".format(hum.getSensorValue()))
-        #        print("Precision Light: {}".format(light.getSensorValue()))
-                # uncomment this line and the one below to visualize octaves values
-                # plotOct(snd1.getOctaves())
-        #        print('')
-        #        time.sleep(1)
         for i in range(10):
                 print(getJSONSensorValues(snd1, snd2, temp, hum, light))
                 print('')
@@ -66,6 +57,15 @@ def getIPAddress():
         if l][0][0])
 
 def openChannels(snd1, snd2, temp, hum, light):
+        with open("config.json") as json_data:
+                conf = json.load(json_data)
+                hub_sn = int(conf["hub_sn"])
+                sound1_port = int(conf["sound1_port"])
+                sound2_port = int(conf["sound2_port"])
+                light_port = int(conf["light_port"])
+                hum_port = int(conf["hum_port"])
+                temp_port = int(conf["temp_port"])
+
         snd1.setDeviceSerialNumber(hub_sn)
         snd1.setHubPort(sound1_port)
 
