@@ -26,4 +26,5 @@ def plot(octaves):
         fig.show()
         print('')
 
+# call main()
 main()
