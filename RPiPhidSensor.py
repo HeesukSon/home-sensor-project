@@ -3,8 +3,9 @@ from Phidget22.Devices.VoltageRatioInput import *
 from Phidget22.Devices.VoltageInput import *
 import termplotlib as tpl
 import numpy as np
-import time
+from time import time, ctime
 import json
+import socket
 
 hub_sn = 540054
 sound1_port = 0
@@ -47,14 +48,22 @@ def main():
 
 def getJSONSensorValues(snd1, snd2, temp, hum, light):
         data = {
+                "From":getIPAddress(),
+                "At":ctime(time()),
                 "Sound1":snd1.getOctaves(),
                 "Sound2":snd2.getOctaves(),
                 "Temperature":temp.getSensorValue(),
                 "Humidity":hum.getSensorValue(),
                 "Light":light.getSensorValue()
         }
-        data = json.dump(data)
+        data = json.dumps(data)
         return data
+
+def getIPAddress():
+        return str([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] 
+        if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), 
+        s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) 
+        if l][0][0])
 
 def openChannels(snd1, snd2, temp, hum, light):
         snd1.setDeviceSerialNumber(hub_sn)
