@@ -1,4 +1,5 @@
 from Phidget22.Devices.SoundSensor import *
+from Phidget22.Devices.VoltageRatioInput import *
 import termplotlib as tpl
 import numpy as np
 import time
@@ -10,6 +11,8 @@ light_port = 5
 temp_port = 4
 hum_port = 3
 
+waitT = 5000
+
 def main():
         snd1 = SoundSensor()
         snd1.setDeviceSerialNumber(hub_sn)
@@ -19,11 +22,26 @@ def main():
         snd2.setDeviceSerialNumber(hub_sn)
         snd2.setHubPort(sound2_port)
 
-        snd1.openWaitForAttachment(5000)
+        temp = VoltageRatioInput()
+        temp.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_TEMPERATURE)
+        temp.setDeviceSerialNumber(hub_sn)
+        temp.setHubPort(temp_port)
+
+        hum = VoltageRatioInput()
+        hum.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_HUMIDITY)
+        hum.setDeviceSerialNumber(hub_sn)
+        hum.setHubPort(hum_port)
+
+        snd1.openWaitForAttachment(waitT)
+        snd2.openWaitForAttachment(waitT)
+        temp.openWaitForAttachment(waitT)
+        hum.openWaitForAttachment(waitT)
 
         for i in range(10):
                 print("Sound1 Level: {} dB".format(snd1.getdB()))
                 print("Sound2 Level: {} dB".format(snd2.getdB()))
+                print("Temperature: {}".format(temp.getSensorValue()))
+                print("Humidity: {}".format(hum.getSensorValue()))
                 #plot(snd1.getOctaves())
                 time.sleep(1)
 
