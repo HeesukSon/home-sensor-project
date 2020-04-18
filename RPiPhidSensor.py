@@ -23,12 +23,10 @@ def main():
         snd2.setHubPort(sound2_port)
 
         temp = VoltageRatioInput()
-        temp.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_HUMIDITY)
         temp.setDeviceSerialNumber(hub_sn)
         temp.setHubPort(temp_port)
 
         hum = VoltageRatioInput()
-        hum.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_TEMPERATURE)
         hum.setDeviceSerialNumber(hub_sn)
         hum.setHubPort(hum_port)
 
@@ -36,6 +34,9 @@ def main():
         snd2.openWaitForAttachment(waitT)
         temp.openWaitForAttachment(waitT)
         hum.openWaitForAttachment(waitT)
+
+        temp.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_TEMPERATURE)
+        hum.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_HUMIDITY)
 
         for i in range(10):
                 print("Sound1 Level: {} dB".format(snd1.getdB()))
