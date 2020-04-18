@@ -23,12 +23,12 @@ def main():
         snd2.setHubPort(sound2_port)
 
         temp = VoltageRatioInput()
-        temp.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_TEMPERATURE)
+        temp.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_HUMIDITY)
         temp.setDeviceSerialNumber(hub_sn)
         temp.setHubPort(temp_port)
 
         hum = VoltageRatioInput()
-        hum.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_HUMIDITY)
+        hum.setSensorType(VoltageRatioSensorType.SENSOR_TYPE_1125_TEMPERATURE)
         hum.setDeviceSerialNumber(hub_sn)
         hum.setHubPort(hum_port)
 
