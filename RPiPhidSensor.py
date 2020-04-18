@@ -3,7 +3,7 @@ from Phidget22.Devices.VoltageRatioInput import *
 from Phidget22.Devices.VoltageInput import *
 import termplotlib as tpl
 import numpy as np
-from time import time, ctime
+import time
 import json
 import socket
 
@@ -40,7 +40,7 @@ def main():
 def getJSONSensorValues(snd1, snd2, temp, hum, light):
         data = {
                 "From":getIPAddress(),
-                "At":ctime(time()),
+                "At":time.ctime(time.time()),
                 "Sound1":snd1.getOctaves(),
                 "Sound2":snd2.getOctaves(),
                 "Temperature":temp.getSensorValue(),
