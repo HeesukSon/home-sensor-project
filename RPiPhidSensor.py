@@ -24,18 +24,37 @@ def main():
 
         openChannels(snd1, snd2, temp, hum, light)
 
-        for i in range(10):
-                print("Sound1 Level: {} dB".format(snd1.getdB()))
-                print("Sound2 Level: {} dB".format(snd2.getdB()))
-                print("Temperature: {}".format(temp.getSensorValue()))
-                print("Humidity: {}".format(hum.getSensorValue()))
-                print("Precision Light: {}".format(light.getSensorValue()))
+        #for i in range(10):
+        #        print("Sound1 Level: {} dB".format(snd1.getdB()))
+        #        print("Sound2 Level: {} dB".format(snd2.getdB()))
+        #        print("Temperature: {}".format(temp.getSensorValue()))
+        #         print("Humidity: {}".format(hum.getSensorValue()))
+        #        print("Precision Light: {}".format(light.getSensorValue()))
                 # uncomment this line and the one below to visualize octaves values
                 # plotOct(snd1.getOctaves())
+        #        print('')
+        #        time.sleep(1)
+        for i in range(10):
+                print(getJSONSensorValues(snd1, snd2, temp, hum, light))
                 print('')
                 time.sleep(1)
 
         snd1.close()
+        snd2.close()
+        temp.close()
+        hum.close()
+        light.close()
+
+def getJSONSensorValues(snd1, snd2, temp, hum, light):
+        data = {
+                "Sound1":snd1.getOctaves(),
+                "Sound2":snd2.getOctaves(),
+                "Temperature":temp.getSensorValue(),
+                "Humidity":hum.getSensorValue(),
+                "Light":light.getSensorValue()
+        }
+        data = json.dump(data)
+        return data
 
 def openChannels(snd1, snd2, temp, hum, light):
         snd1.setDeviceSerialNumber(hub_sn)
