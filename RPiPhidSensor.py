@@ -11,7 +11,7 @@ light_port = 5
 temp_port = 4
 hum_port = 3
 
-waitT = 5000
+waitT = 10000
 
 def main():
         snd1 = SoundSensor()
@@ -25,10 +25,12 @@ def main():
         temp = VoltageRatioInput()
         temp.setDeviceSerialNumber(hub_sn)
         temp.setHubPort(temp_port)
+        temp.setIsHubPortDevice(True)
 
         hum = VoltageRatioInput()
         hum.setDeviceSerialNumber(hub_sn)
         hum.setHubPort(hum_port)
+        hum.setIsHubPortDevice(True)
 
         snd1.openWaitForAttachment(waitT)
         snd2.openWaitForAttachment(waitT)
@@ -43,12 +45,12 @@ def main():
                 print("Sound2 Level: {} dB".format(snd2.getdB()))
                 print("Temperature: {}".format(temp.getSensorValue()))
                 print("Humidity: {}".format(hum.getSensorValue()))
-                #plot(snd1.getOctaves())
+                #plotOct(snd1.getOctaves())
                 time.sleep(1)
 
         snd1.close()
 
-def plot(octaves):
+def plotOct(octaves):
         oct_range = np.array(['31.5', '63', '125', '250', '500', '1k', '2k', '4k', '8k', '16k'])
         oct_values = np.array([round(x) for x in octaves])
 
