@@ -24,7 +24,7 @@ PORT = 10000
 
 def main():
         loadConf()
-        
+
         # open Phidget channels
         snd1 = SoundSensor()
         snd2 = SoundSensor()
@@ -86,7 +86,7 @@ def loadConf():
                 light_port = int(conf["light_port"])
                 hum_port = int(conf["hum_port"])
                 temp_port = int(conf["temp_port"])
-                srv_ip = str(conf["server_ip"])
+                srv_ip = conf["server_ip"]
 
 def openChannels(snd1, snd2, temp, hum, light):
         snd1.setDeviceSerialNumber(hub_sn)
