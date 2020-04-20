@@ -16,6 +16,7 @@ sound2_port = 1
 light_port = 5
 temp_port = 4
 hum_port = 3
+srv_ip = ''
 
 waitT = 10000
 
@@ -35,7 +36,7 @@ def main():
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Connect the socket to the port where the server is listening
-        server_address = ('localhost', PORT)
+        server_address = (srv_ip, PORT)
         print('connecting to {} port {}'.format(server_address[0], server_address[1]))
         sock.connect(server_address)
 
@@ -83,6 +84,7 @@ def openChannels(snd1, snd2, temp, hum, light):
                 light_port = int(conf["light_port"])
                 hum_port = int(conf["hum_port"])
                 temp_port = int(conf["temp_port"])
+                srv_ip = str(conf["server_ip"])
 
         snd1.setDeviceSerialNumber(hub_sn)
         snd1.setHubPort(sound1_port)
