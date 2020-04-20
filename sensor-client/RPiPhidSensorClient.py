@@ -23,6 +23,8 @@ waitT = 10000
 PORT = 10000
 
 def main():
+        loadConf()
+        
         # open Phidget channels
         snd1 = SoundSensor()
         snd2 = SoundSensor()
@@ -37,7 +39,7 @@ def main():
 
         # Connect the socket to the port where the server is listening
         server_address = (srv_ip, PORT)
-        print('connecting to {} port {}'.format(server_address[0], server_address[1]))
+        print('connecting to {} port {}'.format(srv_ip, PORT))
         sock.connect(server_address)
 
         # send sensed data to db server
@@ -75,7 +77,7 @@ def getIPAddress():
         s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) 
         if l][0][0])
 
-def openChannels(snd1, snd2, temp, hum, light):
+def loadConf():
         with open("config.json") as json_data:
                 conf = json.load(json_data)
                 hub_sn = int(conf["hub_sn"])
@@ -86,6 +88,7 @@ def openChannels(snd1, snd2, temp, hum, light):
                 temp_port = int(conf["temp_port"])
                 srv_ip = str(conf["server_ip"])
 
+def openChannels(snd1, snd2, temp, hum, light):
         snd1.setDeviceSerialNumber(hub_sn)
         snd1.setHubPort(sound1_port)
 
