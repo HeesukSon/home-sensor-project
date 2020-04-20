@@ -6,6 +6,8 @@ import numpy as np
 import time
 import json
 import socket
+import socket
+import sys
 
 # DEFAULT Values - To be updated in openChannels() method
 hub_sn = 540054
@@ -17,7 +19,10 @@ hum_port = 3
 
 waitT = 10000
 
+PORT = 10000
+
 def main():
+        # open Phidget channels
         snd1 = SoundSensor()
         snd2 = SoundSensor()
         temp = VoltageRatioInput()
@@ -26,11 +31,24 @@ def main():
 
         openChannels(snd1, snd2, temp, hum, light)
 
-        for i in range(10):
-                print(getJSONSensorValues(snd1, snd2, temp, hum, light))
-                print('')
-                time.sleep(1)
+        # Create a TCP/IP socket
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+        # Connect the socket to the port where the server is listening
+        server_address = ('localhost', PORT)
+        print('connecting to {} port {}'.format(server_address[0], server_address[1]))
+        sock.connect(server_address)
+
+        # send sensed data to db server
+        try:
+                #for i in range(10):
+                sock.sendall(str(getJSONSensorValues(snd1, snd2, temp, hum, light)))
+                time.sleep(5)
+        finally:
+                print('closing socket')
+                sock.close()
+                
+        # close Phidget channels
         snd1.close()
         snd2.close()
         temp.close()
