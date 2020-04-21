@@ -19,13 +19,21 @@ temp_port = 4
 hum_port = 3
 srv_ip = ''
 
-waitT = 10000
+with open("config.json") as json_data:
+        conf = json.load(json_data)
+        hub_sn = int(conf["hub_sn"])
+        sound1_port = int(conf["sound1_port"])
+        sound2_port = int(conf["sound2_port"])
+        light_port = int(conf["light_port"])
+        hum_port = int(conf["hum_port"])
+        temp_port = int(conf["temp_port"])
+        srv_ip = conf["server_ip"]
+        print("srv_ip: {}, type(srv_ip): {}".format(srv_ip, type(srv_ip)))
 
+waitT = 10000
 PORT = 10000
 
 def main():
-        loadConf()
-
         # open Phidget channels
         snd1 = SoundSensor()
         snd2 = SoundSensor()
@@ -39,7 +47,7 @@ def main():
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Connect the socket to the port where the server is listening
-        server_address = ('192.168.87.27', PORT)
+        server_address = (srv_ip, PORT)
         print('connecting to {} port {}'.format(srv_ip, PORT))
         sock.connect(server_address)
 
@@ -77,18 +85,6 @@ def getIPAddress():
         if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), 
         s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) 
         if l][0][0])
-
-def loadConf():
-        with open("config.json") as json_data:
-                conf = json.load(json_data)
-                hub_sn = int(conf["hub_sn"])
-                sound1_port = int(conf["sound1_port"])
-                sound2_port = int(conf["sound2_port"])
-                light_port = int(conf["light_port"])
-                hum_port = int(conf["hum_port"])
-                temp_port = int(conf["temp_port"])
-                srv_ip = conf["server_ip"]
-                print("srv_ip:{}".format(srv_ip))
 
 def openChannels(snd1, snd2, temp, hum, light):
         snd1.setDeviceSerialNumber(hub_sn)
