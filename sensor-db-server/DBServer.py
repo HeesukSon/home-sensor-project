@@ -27,7 +27,7 @@ while True:
             data = connection.recv(1024)
             
             if data:
-                print('received: {}'.format(data))
+                print('received: {}'.format(pickle.loads(data)))
             else:
                 print('no more data')
                 break

@@ -8,6 +8,7 @@ import json
 import socket
 import socket
 import sys
+import pickle
 
 # DEFAULT Values - To be updated in openChannels() method
 hub_sn = 540054
@@ -45,8 +46,8 @@ def main():
         # send sensed data to db server
         try:
                 #for i in range(10):
-                sock.sendall(getJSONSensorValues(snd1, snd2, temp, hum, light).encode())
-                time.sleep(5)
+                sock.sendall(pickle.dumps(getJSONSensorValues(snd1, snd2, temp, hum, light)))
+                time.sleep(1)
         finally:
                 print('closing socket')
                 sock.close()
