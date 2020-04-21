@@ -50,8 +50,9 @@ def main():
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         server_address = (srv_ip, PORT)
                         sock.connect(server_address)
-                        sock.sendall(pickle.dumps(getJSONSensorValues(snd1, snd2, temp, hum, light)))
-                        print('Sensor data has been sent.')
+                        sensor_data = getJSONSensorValues(snd1, snd2, temp, hum, light)
+                        sock.sendall(pickle.dumps(sensor_data))
+                        print('Sensor data has been sent: {}'.format(sensor_data))
                 finally:
                         sock.close()
                         print('Socket has been closed.')
