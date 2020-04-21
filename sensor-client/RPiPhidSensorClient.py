@@ -69,7 +69,7 @@ def getJSONSensorValues(snd1, snd2, temp, hum, light):
         data = {
                 "From":getIPAddress(),
                 #"At":time.ctime(time.time()),
-                "At":time.strftime("%y-%m-%d %H:%M:%S", time.localtime()),
+                "At":time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
                 "Sound1":snd1.getOctaves(),
                 "Sound2":snd2.getOctaves(),
                 "Temperature":temp.getSensorValue(),
