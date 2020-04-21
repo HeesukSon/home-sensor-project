@@ -28,11 +28,11 @@ cursor = db_conn.cursor()
 
 while True:
     # Wait for a connection
-    print('waiting for a connection')
+    print('Waiting for a connection')
     connection, client_address = sock.accept()
 
     try:
-        print('connection from {}'.format(client_address))
+        print('Connection from {}'.format(client_address))
 
         # Receive the data in small chunks and retransmit it
         while True:
@@ -40,12 +40,6 @@ while True:
             
             if data:
                 data_json = json.loads(pickle.loads(data))
-
-                print('Sound1: {}'.format(data_json['Sound1']))
-                print('Sound2: {}'.format(data_json['Sound2']))
-                print('Temperature: {}'.format(data_json['Temperature']))
-                print('Humidity: {}'.format(data_json['Humidity']))
-                print('Light: {}'.format(data_json['Light']))
 
                 # timescale DB query execution
                 insert_query = "INSERT INTO sensor_data (db_insert_time, room, data_gen_time, sound1, sound2, temperature, humidity, light) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
