@@ -38,14 +38,14 @@ def main():
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Connect the socket to the port where the server is listening
-        server_address = (srv_ip, PORT)
+        server_address = ('192.168.87.27', PORT)
         print('connecting to {} port {}'.format(srv_ip, PORT))
         sock.connect(server_address)
 
         # send sensed data to db server
         try:
                 #for i in range(10):
-                sock.sendall(str(getJSONSensorValues(snd1, snd2, temp, hum, light)))
+                sock.sendall(getJSONSensorValues(snd1, snd2, temp, hum, light).encode())
                 time.sleep(5)
         finally:
                 print('closing socket')
@@ -87,6 +87,7 @@ def loadConf():
                 hum_port = int(conf["hum_port"])
                 temp_port = int(conf["temp_port"])
                 srv_ip = conf["server_ip"]
+                print("srv_ip:{}".format(srv_ip))
 
 def openChannels(snd1, snd2, temp, hum, light):
         snd1.setDeviceSerialNumber(hub_sn)
