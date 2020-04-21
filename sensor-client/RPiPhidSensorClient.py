@@ -42,14 +42,13 @@ def main():
         light = VoltageInput()
 
         openChannels(snd1, snd2, temp, hum, light)
-
         # Create a TCP/IP socket
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_address = (srv_ip, PORT)
 
         # send sensed data to db server
         for i in range(10):
                 try:
+                        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        server_address = (srv_ip, PORT)
                         sock.connect(server_address)
                         sock.sendall(pickle.dumps(getJSONSensorValues(snd1, snd2, temp, hum, light)))
                         print('Sensor data has been sent.')
