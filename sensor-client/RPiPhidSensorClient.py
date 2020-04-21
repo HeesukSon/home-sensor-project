@@ -10,7 +10,7 @@ import socket
 import sys
 import pickle
 
-# DEFAULT Values - To be updated in openChannels() method
+# DEFAULT Values for conf. setting
 hub_sn = 540054
 sound1_port = 0
 sound2_port = 1
@@ -19,6 +19,7 @@ temp_port = 4
 hum_port = 3
 srv_ip = ''
 
+# conf. setting loaded
 with open("config.json") as json_data:
         conf = json.load(json_data)
         hub_sn = int(conf["hub_sn"])
@@ -28,7 +29,6 @@ with open("config.json") as json_data:
         hum_port = int(conf["hum_port"])
         temp_port = int(conf["temp_port"])
         srv_ip = conf["server_ip"]
-        print("srv_ip: {}, type(srv_ip): {}".format(srv_ip, type(srv_ip)))
 
 waitT = 10000
 PORT = 10000
@@ -45,20 +45,18 @@ def main():
 
         # Create a TCP/IP socket
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        # Connect the socket to the port where the server is listening
         server_address = (srv_ip, PORT)
-        print('connecting to {} port {}'.format(srv_ip, PORT))
-        sock.connect(server_address)
 
         # send sensed data to db server
-        try:
-                #for i in range(10):
-                sock.sendall(pickle.dumps(getJSONSensorValues(snd1, snd2, temp, hum, light)))
+        for i in range(10):
+                try:
+                        sock.connect(server_address)
+                        sock.sendall(pickle.dumps(getJSONSensorValues(snd1, snd2, temp, hum, light)))
+                        print('Sensor data has been sent.')
+                finally:
+                        sock.close()
+                        print('Socket has been closed.')
                 time.sleep(1)
-        finally:
-                print('closing socket')
-                sock.close()
                 
         # close Phidget channels
         snd1.close()
