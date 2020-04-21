@@ -5,4 +5,6 @@ As Phidget platform has evolved, its hardware and software classes have been als
 
 I hope this simple code sample can provide python Phidget developers with helpful intuition. To exclude any concerns about the external libraries and virtual environment, I did not uploaded the required modules imported in the code sample. So they must be downloaded or installed accordingly to your development environment setup. 
 
-With regard to branching, the **master** branch is equivalent to **local-print** branch. With these two branches, you can try printing out Phidget sensor data in a local terminal. As an advanced branch, you can try **server-client** branch. In this branch, the Raspberry pi to which Phidget sensors are attached turns into a sensor client which sends the sensor data to a server via a TCP connection. 
+## Branch description
+* **master** branch is equivalent to **local-print** branch. With these two branches, you can try printing out Phidget sensor data in a local terminal. 
+* As an advanced branch, you can try **server-client** branch. In this branch, the Raspberry pi to which Phidget sensors are attached turns into a sensor client which sends the sensor data to a server via a TCP connection. 
