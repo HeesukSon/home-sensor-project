@@ -55,6 +55,7 @@ def main():
                                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                                 server_address = (srv_ip, PORT)
                                 sock.connect(server_address)
+                                time.sleep(0.1)
                                 sensor_data = getJSONSensorValues(snd1, snd2, temp, hum, light, motion)
                                 sock.sendall(pickle.dumps(sensor_data))
                                 print('Sensor data has been sent: {}'.format(sensor_data))
