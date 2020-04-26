@@ -3,40 +3,26 @@ import sys
 import pickle
 import json
 import psycopg2
-
-# Server addressing
-PORT = 10000
-hostname = socket.gethostname()    
-IP_ADDR = socket.gethostbyname(hostname)
-
-ip_room_map = open("room-map.json")
-ip_room_map_json = json.load(ip_room_map)
-
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Bind the socket to the port
-server_address = (IP_ADDR, PORT)
-sock.bind(server_address)
-
-# Listen for incoming connections
-sock.listen(1)
+import threading
 
 # DB connection
 db_conn = psycopg2.connect(dbname='homedata', user='postgres', host='localhost')
 cursor = db_conn.cursor()
 
-while True:
-    # Wait for a connection
-    print('Waiting for a connection')
-    connection, client_address = sock.accept()
+ip_room_map = open("room-map.json")
+ip_room_map_json = json.load(ip_room_map)
 
-    try:
-        print('Connection from {}'.format(client_address))
-
-        # Receive the data in small chunks and retransmit it
+class ClientThread(threading.Thread):
+    def __init__(self, cAddress, cSocket):
+        threading.Thread.__init__(self)
+        self.cSocket = cSocket
+        self.cAddress = cAddress
+        print("New connection added: {}".format(self.cAddress))
+    def run(self):
+        print("Connection from: {}".format(self.cAddress))
+        
         while True:
-            data = connection.recv(1024)
+            data = self.cSocket.recv(1024)
             
             if data:
                 data_json = json.loads(pickle.loads(data))
@@ -49,10 +35,52 @@ while True:
                 print("Record inserted successfully into the DB table")
             else:
                 break
+        print("Client at {} disconnected...".format(self.cAddress))
+
+
+# Server addressing
+PORT = 10000
+hostname = socket.gethostname()    
+IP_ADDR = socket.gethostbyname(hostname)
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket to the port
+server_address = (IP_ADDR, PORT)
+sock.bind(server_address)
+
+# Listen for incoming connections
+print('Server started! \nWaiting for a connection...')
+while True:
+    sock.listen(1)    
+    cSocket, cAddress = sock.accept()
+
+    newthread = ClientThread(cAddress, cSocket)
+    newthread.start()
+
+    #try:
+    #    print('Connection from {}'.format(client_address))
+
+        # Receive the data in small chunks and retransmit it
+    #    while True:
+    #        data = connection.recv(1024)
             
-    finally:
+    #        if data:
+    #            data_json = json.loads(pickle.loads(data))
+
+                # timescale DB query execution
+    #            insert_query = "INSERT INTO sensor_data (db_insert_time, room, data_gen_time, sound1, sound2, temperature, humidity, light, motion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    #            record_to_insert = ("now()", ip_room_map_json[data_json['From']], data_json['At'], "{"+','.join(map(str, data_json['Sound1']))+"}", "{"+','.join(map(str, data_json['Sound2']))+"}", data_json['Temperature'], data_json['Humidity'], data_json['Light'], data_json['Motion'])
+    #            cursor.execute(insert_query, record_to_insert)
+    #            db_conn.commit()
+    #            print("Record inserted successfully into the DB table")
+    #        else:
+    #            break
+            
+    #finally:
         # Clean up the connection
-        connection.close()
+    #    connection.close()
 
 # Closing DB connection
 cursor.close()
