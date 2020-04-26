@@ -48,7 +48,7 @@ def main():
         # Create a TCP/IP socket
 
         # send sensed data to db server
-        for i in range(10):
+        for i in range(1000):
                 try:
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         server_address = (srv_ip, PORT)
@@ -80,6 +80,7 @@ def getJSONSensorValues(snd1, snd2, temp, hum, light, motion):
                 "Light":light.getSensorValue(),
                 "Motion":motion.getSensorValue()
         }
+        print("Motion:{}".format(data["Motion"]))
         data = json.dumps(data)
         return data
 
