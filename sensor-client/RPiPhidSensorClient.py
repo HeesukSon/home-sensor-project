@@ -110,7 +110,7 @@ def openChannels(snd1, snd2, temp, hum, light, motion):
 
         motion.setDeviceSerialNumber(hub_sn)
         motion.setHubPort(motion_port)
-        #motion.setIsHubPortDevice(True)
+        motion.setIsHubPortDevice(True)
 
         snd1.openWaitForAttachment(waitT)
         snd2.openWaitForAttachment(waitT)
