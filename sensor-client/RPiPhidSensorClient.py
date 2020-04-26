@@ -85,7 +85,6 @@ def getJSONSensorValues(snd1, snd2, temp, hum, light, motion):
                 "Light":light.getSensorValue(),
                 "Motion":motion.getSensorValue()
         }
-        print("Motion:{}".format(data["Motion"]))
         data = json.dumps(data)
         return data
 
