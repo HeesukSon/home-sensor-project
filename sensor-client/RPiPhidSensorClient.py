@@ -9,6 +9,12 @@ import socket
 import socket
 import sys
 import pickle
+import logging
+
+# LOGGING setup
+logging.basicConfig(filename='/errors.log', level=logging.DEBUG, 
+                    format='%(asctime)s %(levelname)s %(name)s %(message)s')
+logger=logging.getLogger(__name__)
 
 # DEFAULT Values for conf. setting
 hub_sn = 540054
@@ -58,6 +64,7 @@ def main():
                         print('Sensor data has been sent: {}'.format(sensor_data))
                 except Exception as e:
                         print(e)
+                        logger.error(e)
                 finally:
                         sock.close()
                         print('Socket has been closed.')
