@@ -13,3 +13,4 @@ In this project, the client has platform-specific dependencies on Phidgets and P
 * **master** branch is equivalent to **local-print** branch. With these two branches, you can try printing out Phidget sensor data in a local terminal. 
 * As an advanced branch, you can try **server-client**. In this branch, the Raspberry pi to which Phidget sensors are attached turns into a sensor client which sends the sensor data to a server via a TCP connection. 
 * **server-client-timescaledb** branch is an extension of the **server-client** branch. In this branch, the server stores the transmitted sensor data to a **timescale database**, which is a widely used database to store timeseries data stream.
+* **server-multithread** branch extends **server-client-timescaledb** branch so that it can support multiple connections from more than one sensor client.
