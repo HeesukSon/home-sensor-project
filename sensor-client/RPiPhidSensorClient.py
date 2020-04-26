@@ -59,7 +59,7 @@ def main():
                         sock.sendall(pickle.dumps(sensor_data))
                         print('Sensor data has been sent: {}'.format(sensor_data))
                 except Exception as e:
-                        print("Exception found: {}".format(type(e)))
+                        print(e)
                 finally:
                         sock.close()
                         print('Socket has been closed.')
