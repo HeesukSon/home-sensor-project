@@ -18,9 +18,7 @@ class ClientThread(threading.Thread):
         self.cSocket = cSocket
         self.cAddress = cAddress
         print("New connection added: {}".format(self.cAddress))
-    def run(self):
-        print("Connection from: {}".format(self.cAddress))
-        
+    def run(self):        
         while True:
             data = self.cSocket.recv(1024)
             
@@ -40,6 +38,7 @@ class ClientThread(threading.Thread):
 
 # Server addressing
 PORT = 10000
+ALLOW_CONNECT = 5
 hostname = socket.gethostname()    
 IP_ADDR = socket.gethostbyname(hostname)
 
@@ -53,34 +52,11 @@ sock.bind(server_address)
 # Listen for incoming connections
 print('Server started! \nWaiting for a connection...')
 while True:
-    sock.listen(1)    
+    sock.listen(ALLOW_CONNECT)    
     cSocket, cAddress = sock.accept()
 
     newthread = ClientThread(cAddress, cSocket)
     newthread.start()
-
-    #try:
-    #    print('Connection from {}'.format(client_address))
-
-        # Receive the data in small chunks and retransmit it
-    #    while True:
-    #        data = connection.recv(1024)
-            
-    #        if data:
-    #            data_json = json.loads(pickle.loads(data))
-
-                # timescale DB query execution
-    #            insert_query = "INSERT INTO sensor_data (db_insert_time, room, data_gen_time, sound1, sound2, temperature, humidity, light, motion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    #            record_to_insert = ("now()", ip_room_map_json[data_json['From']], data_json['At'], "{"+','.join(map(str, data_json['Sound1']))+"}", "{"+','.join(map(str, data_json['Sound2']))+"}", data_json['Temperature'], data_json['Humidity'], data_json['Light'], data_json['Motion'])
-    #            cursor.execute(insert_query, record_to_insert)
-    #            db_conn.commit()
-    #            print("Record inserted successfully into the DB table")
-    #        else:
-    #            break
-            
-    #finally:
-        # Clean up the connection
-    #    connection.close()
 
 # Closing DB connection
 cursor.close()
