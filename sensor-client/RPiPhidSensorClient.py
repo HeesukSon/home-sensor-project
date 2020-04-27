@@ -12,7 +12,7 @@ import pickle
 import logging
 
 # LOGGING setup
-logging.basicConfig(filename='/errors.log', level=logging.DEBUG, 
+logging.basicConfig(filename='./errors.log', level=logging.DEBUG, 
                     format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger=logging.getLogger(__name__)
 
