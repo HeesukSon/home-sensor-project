@@ -4,6 +4,7 @@ import pickle
 import json
 import psycopg2
 import threading
+import pprint
 
 # DB connection
 db_conn = psycopg2.connect(dbname='homedata', user='postgres', host='localhost')
@@ -31,16 +32,24 @@ class ClientThread(threading.Thread):
                     data_json = json.loads(pickle.loads(data))
                     insert_query = "INSERT INTO sensor_data (db_insert_time, room, data_gen_time, sound1, sound2, temperature, humidity, light, motion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                     record_to_insert = ("now()", ip_room_map_json[data_json['From']], data_json['At'], "{"+','.join(map(str, data_json['Sound1']))+"}", "{"+','.join(map(str, data_json['Sound2']))+"}", data_json['Temperature'], data_json['Humidity'], data_json['Light'], data_json['Motion'])
-                except Exception as e:
-                    # Particle sensor client
-                    data_str = data.decode('utf8')
-                    data_json = json.loads(data_str)
-                    insert_query = "INSERT INTO sensor_data (db_insert_time, room, temperature, humidity, airquality, dustconcentration) VALUES (%s, %s, %s, %s, %s, %s)"
-                    record_to_insert = ("now()", ip_room_map_json[data_json['From']], data_json['Temperature'], data_json['Humidity'], data_json['Airquality'], data_json['DustConcentration'])
-                finally:
+                    
                     # timescale DB query execution
                     cursor.execute(insert_query, record_to_insert)
                     db_conn.commit()
+                except Exception as e:
+                    # Particle sensor client
+                    data_str = data.decode('utf8')
+                    data_list_json = json.loads(data_str)
+
+                    for i in range(6):
+                        data_json = data_list_json[str(i)]
+                        insert_query = "INSERT INTO sensor_data (db_insert_time, room, data_gen_time, temperature, humidity, airquality, dustconcentration) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                        record_to_insert = ("now()", ip_room_map_json[data_json['From']], data_json['At'], data_json['Temperature'], data_json['Humidity'], data_json['Airquality'], data_json['DustConcentration'])
+                        
+                        # timescale DB query execution
+                        cursor.execute(insert_query, record_to_insert)
+                        db_conn.commit()
+                finally:
                     print("Record inserted successfully into the DB table")
             else:
                 break
